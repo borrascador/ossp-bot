@@ -5,7 +5,7 @@ import csv, random
 class Markov(object):
 
     def __init__(self, open_csv):
-        self.depth = 4
+        self.depth = 3
         self.cache = {}
         self.open_csv = open_csv
         self.words = self.csv_to_words()
