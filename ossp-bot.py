@@ -1,4 +1,4 @@
-import csv, re, random, tweepy, time, sys
+import csv, random, tweepy, time
 
 
 
@@ -21,6 +21,11 @@ class Markov(object):
         
         for p, s in enumerate(posts):
             posts[p] = s[2:-1]
+            
+            if posts[p] == '' or posts[p][-1] in ['.','!']:
+                continue
+            else:
+                posts[p] = posts[p]+'.'
                
         words = [word for post in [post.split() for post in posts] for word in post]
         
