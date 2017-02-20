@@ -1,4 +1,5 @@
 import csv, random
+from unicodetoascii import unicodetoascii
 
 
 
@@ -22,14 +23,14 @@ class Markov(object):
         
         for p, s in enumerate(posts):
             posts[p] = s[2:-1]
-            
             if posts[p] == '' or posts[p][-1] in ['.','!']:
                 continue
             else:
                 posts[p] = posts[p]+'.'
         
-        split_posts = [post.split() for post in posts]
-        words = [word for post in split_posts for word in post]
+        posts = [post.split() for post in posts]
+        words = [unicodetoascii(word) for post in posts \
+        for word in post]
 
         return words
     
