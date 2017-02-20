@@ -18,4 +18,4 @@ while True:
     line = markov.generate_markov_text()
     if len(line)>140: line = line[:140]
     api.update_status(line)
-    time.sleep(1200) #Tweet every 5 minutes
+    time.sleep(1800) #Tweet every 30 minutes
