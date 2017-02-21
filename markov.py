@@ -36,9 +36,10 @@ class Markov(object):
     
     def tuples(self):
         '''
-            Generates tuples from the given data string and the chosen markov 
-            chain length, called depth. So if our string were "What a lovely 
-            day" with depth 3, we'd generate (What, a, lovely) and then 
+            Generates tuples from the given data string and the 
+            chosen markov chain length, called depth. So if our
+            string were "What a lovely day" with depth 3, we'd 
+            generate (What, a, lovely) and then 
             (a, lovely, day).
         '''
         

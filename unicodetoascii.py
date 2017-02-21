@@ -1,6 +1,8 @@
-''' Unicode to ASCII escape code replacer
+''' 
+    Unicode to ASCII escape code replacer
     Taken from "tushortz/UNICODE to ASCII python replace"
-    Found at https://gist.github.com/tushortz/9fbde5d023c0a0204333267840b592f9
+    Found at:
+    https://gist.github.com/tushortz/9fbde5d023c0a0204333267840b592f9
 '''
 
 def unicodetoascii(text):
