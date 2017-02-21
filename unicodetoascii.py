@@ -18,11 +18,11 @@ def unicodetoascii(text):
             replace('\\xe2\\x80\\x94', '-').
             replace('\\xe2\\x80\\x98', "'").
             replace('\\xe2\\x80\\x9b', "'").
-            replace('\\xe2\\x80\\x9c', '"').
-            replace('\\xe2\\x80\\x9c', '"').
-            replace('\\xe2\\x80\\x9d', '"').
-            replace('\\xe2\\x80\\x9e', '"').
-            replace('\\xe2\\x80\\x9f', '"').
+            replace('\\xe2\\x80\\x9c', '').#"
+            replace('\\xe2\\x80\\x9c', '').#"
+            replace('\\xe2\\x80\\x9d', '').#"
+            replace('\\xe2\\x80\\x9e', '').#"
+            replace('\\xe2\\x80\\x9f', '').#"
             replace('\\xe2\\x80\\xa6', '...').
             replace('\\xe2\\x80\\xb2', "'").
             replace('\\xe2\\x80\\xb3', "'").
@@ -33,8 +33,15 @@ def unicodetoascii(text):
             replace('\\xe2\\x81\\xba', "+").
             replace('\\xe2\\x81\\xbb', "-").
             replace('\\xe2\\x81\\xbc', "=").
-            replace('\\xe2\\x81\\xbd', "(").
-            replace('\\xe2\\x81\\xbe', ")")
+            replace('\\xe2\\x81\\xbd', "").#(
+            replace('\\xe2\\x81\\xbe', "").#)
+            replace('\\n', ' ').
+            replace('"', '').
+            replace('(', '').
+            replace(')', '')
 
                  )
+    # text = bytes(text, 'utf-8')
+    # TEXT = text.decode()
+    
     return TEXT
