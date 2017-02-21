@@ -15,4 +15,4 @@ while True:
         line = line[:140]
     api.update_status(line)
     print(line + " @ " + str(time.ctime()))
-    time.sleep(1800)  # Tweet every 30 minutes
+    time.sleep(600)  # Tweet every 10 minutes
