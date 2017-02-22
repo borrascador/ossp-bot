@@ -6,14 +6,15 @@ from markov import Markov
 start_time = time.time()
 
 seed_word = str(sys.argv[1])
-iterations = int(sys.argv[2])
+depth = int(sys.argv[2])
+iterations = int(sys.argv[3])
 
-markov = Markov('ossp-posts.csv')
+markov = Markov('ossp-posts.csv', depth=depth)
 
 for i in range(iterations):
     line = markov.generate_markov_text(seed_word=seed_word)
     if len(line) > 140:
         line = line[:140]
-    print(line, "\n")
+    print("\n" + line)
 
-print("--- %s seconds ---" % (time.time() - start_time))
+print("\n--- %s seconds ---" % (time.time() - start_time))
