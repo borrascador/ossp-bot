@@ -1,14 +1,15 @@
-''' 
+'''
     Unicode to ASCII escape code replacer
     Taken from "tushortz/UNICODE to ASCII python replace"
     Found at:
     https://gist.github.com/tushortz/9fbde5d023c0a0204333267840b592f9
 '''
 
+
 def unicodetoascii(text):
 
     TEXT = (text.
-    		replace('\\xe2\\x80\\x99', "'").
+            replace('\\xe2\\x80\\x99', "'").
             replace('\\xc3\\xa9', 'e').
             replace('\\xe2\\x80\\x90', '-').
             replace('\\xe2\\x80\\x91', '-').
@@ -18,11 +19,11 @@ def unicodetoascii(text):
             replace('\\xe2\\x80\\x94', '-').
             replace('\\xe2\\x80\\x98', "'").
             replace('\\xe2\\x80\\x9b', "'").
-            replace('\\xe2\\x80\\x9c', '').#"
-            replace('\\xe2\\x80\\x9c', '').#"
-            replace('\\xe2\\x80\\x9d', '').#"
-            replace('\\xe2\\x80\\x9e', '').#"
-            replace('\\xe2\\x80\\x9f', '').#"
+            replace('\\xe2\\x80\\x9c', '').  # filters "
+            replace('\\xe2\\x80\\x9c', '').  # filters "
+            replace('\\xe2\\x80\\x9d', '').  # filters "
+            replace('\\xe2\\x80\\x9e', '').  # filters "
+            replace('\\xe2\\x80\\x9f', '').  # filters "
             replace('\\xe2\\x80\\xa6', '...').
             replace('\\xe2\\x80\\xb2', "'").
             replace('\\xe2\\x80\\xb3', "'").
@@ -33,15 +34,13 @@ def unicodetoascii(text):
             replace('\\xe2\\x81\\xba', "+").
             replace('\\xe2\\x81\\xbb', "-").
             replace('\\xe2\\x81\\xbc', "=").
-            replace('\\xe2\\x81\\xbd', "").#(
-            replace('\\xe2\\x81\\xbe', "").#)
+            replace('\\xe2\\x81\\xbd', "").  # filters (
+            replace('\\xe2\\x81\\xbe', "").  # filters )
             replace('\\n', ' ').
             replace('"', '').
             replace('(', '').
             replace(')', '')
 
-                 )
-    # text = bytes(text, 'utf-8')
-    # TEXT = text.decode()
-    
+            )
+
     return TEXT

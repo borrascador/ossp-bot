@@ -79,6 +79,7 @@ class Markov(object):
         self.cache = {}
         self.words.reverse()
         self.database()
+
         seed_words = self.build_chain(seed_word=seed_word)
         front_words = []
 
@@ -90,6 +91,10 @@ class Markov(object):
             del seed_words[0]
             key = tuple(seed_words)
             seed_words.append(random.choice(self.cache[key]))
+
+        self.cache = {}
+        self.words.reverse()
+        self.database()
 
         gen_words = front_words[:-1] + back_words
         return ' '.join(gen_words)
