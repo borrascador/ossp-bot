@@ -1,4 +1,5 @@
 import tweepy
+import sys
 import time
 from markov import Markov
 from secret import *
