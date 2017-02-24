@@ -12,7 +12,8 @@ iterations = int(sys.argv[3])
 
 dir = os.path.dirname(__file__)
 filename = os.path.join(dir,
-                        'fb-scraper/1500321840185061_facebook_statuses.csv'
+                        'fb-scraper',
+                        '1500321840185061_facebook_statuses.csv'
                         )
 markov = Markov(filename, depth=depth)
 
