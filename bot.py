@@ -11,13 +11,13 @@ api = tweepy.API(auth)
 
 minutes_interval = int(sys.argv[1])
 
-markov = Markov('ossp-posts.csv')
+markov = Markov('\fb-scraper\1500321840185061_facebook_statuses.csv')
 t = 0
 
 while True:
     line = markov.generate_markov_text('but')
-    if len(line) > 140:
-        line = line[:140]
+    while len(line) > 140:
+        line = markov.generate_markov_text('but')
     api.update_status(line)
     t += 1
     print("Tweet #" + str(t) + " @ " + str(time.ctime()) + ":\n" + line)

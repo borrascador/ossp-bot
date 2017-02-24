@@ -1,6 +1,5 @@
 import csv
 import random
-from unicodetoascii import unicodetoascii
 
 
 class Markov(object):
@@ -15,21 +14,21 @@ class Markov(object):
 
     def csv_to_words(self):
         posts = []
-        with open(self.open_csv, 'r') as f:
+        with open(self.open_csv, 'r', encoding='UTF-8') as f:
             reader = csv.reader(f)
             for row in reader:
                 posts.append(row[1])
         f.close()
 
         for p, s in enumerate(posts):
-            posts[p] = s[2:-1]
+            posts[p] = s
             if posts[p] == '' or posts[p][-1] in ['.', '!']:
                 continue
             else:
                 posts[p] = posts[p]+'.'
 
         posts = [post.split() for post in posts]
-        words = [unicodetoascii(word) for post in posts for word in post]
+        words = [word for post in posts for word in post]
 
         return words
 
@@ -97,4 +96,6 @@ class Markov(object):
         self.database()
 
         gen_words = front_words[:-1] + back_words
+        if not gen_words[0][0].isupper():
+            gen_words[0] = gen_words[0].capitalize()
         return ' '.join(gen_words)
