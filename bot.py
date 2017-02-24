@@ -1,6 +1,7 @@
 import tweepy
 import sys
 import time
+import os
 from markov import Markov
 from secret import *
 
@@ -11,7 +12,11 @@ api = tweepy.API(auth)
 
 minutes_interval = int(sys.argv[1])
 
-markov = Markov('\fb-scraper\1500321840185061_facebook_statuses.csv')
+dir = os.path.dirname(__file__)
+filename = os.path.join(dir,
+                        'fb-scraper/1500321840185061_facebook_statuses.csv'
+                        )
+markov = Markov(filename)
 t = 0
 
 while True:
