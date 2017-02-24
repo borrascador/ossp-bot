@@ -17,13 +17,13 @@ filename = os.path.join(dir,
                         'fb-scraper',
                         '1500321840185061_facebook_statuses.csv'
                         )
-markov = Markov(filename)
+markov = Markov(filename, seed='but')
 t = 0
 
 while True:
-    line = markov.generate_markov_text('but')
+    line = markov.generate_markov_text()
     while len(line) > 140:
-        line = markov.generate_markov_text('but')
+        line = markov.generate_markov_text()
     api.update_status(line)
     t += 1
     print("Tweet #" + str(t) + " @ " + str(time.ctime()) + ":\n" + line)
