@@ -1,5 +1,7 @@
 import csv
 import random
+import re
+from string import punctuation
 
 
 class Markov(object):
@@ -9,27 +11,51 @@ class Markov(object):
         self.depth = depth
         self.cache = {}
         self.open_csv = open_csv
-        self.words = self.csv_to_words()
+        self.words = self.get_words()
         self.word_size = len(self.words)
         self.database()
 
-    def csv_to_words(self):
-        posts = []
-        with open(self.open_csv, 'r', encoding='UTF-8') as f:
-            reader = csv.reader(f)
-            for row in reader:
-                posts.append(row[1])
-        f.close()
+    def get_words(self):
+        words = []
+        try:
+            with open('words.txt', 'r', encoding='UTF-8') as f:
+                words = f.readlines()
+                words = [x.strip() for x in words]
+            f.close()
+            
+        except IOError:
+            posts = []
+            with open(self.open_csv, 'r', encoding='UTF-8') as f:
+                reader = csv.reader(f)
+                for row in reader:
+                    posts.append(row[1])
+            f.close()
+            
+            del posts[0]
 
-        for p, s in enumerate(posts):
-            posts[p] = s
-            if posts[p] == '' or posts[p][-1] in ['.', '!']:
-                continue
-            else:
-                posts[p] = posts[p]+'.'
+            # Remove spaces before colons and semicolons
+            pattern1 = re.compile(r'\s:|\s;')
+            posts = [re.sub(pattern1, ':', s) for s in posts]
+            
+            # Remove double quotes and parentheses from all posts
+            pattern2 = re.compile(r'\"|\(|\)')
+            posts = [re.sub(pattern2, '', s) for s in posts]
 
-        posts = [post.split() for post in posts]
-        words = [word for post in posts for word in post]
+            for p, s in enumerate(posts):
+                posts[p] = s
+                if (posts[p] == '') or (posts[p][-1] in ['.', '!', '?']):
+                    continue
+                
+                else:
+                    posts[p] = posts[p].strip()+'.'
+
+            posts = [post.split() for post in posts]
+            words = [word for post in posts for word in post]
+
+            with open('words.txt', 'w', encoding='UTF-8') as f:
+                for word in words:
+                    f.write("{}\n".format(word))
+            f.close()
 
         return words
 
@@ -56,7 +82,12 @@ class Markov(object):
                 self.cache[key] = [tuple[-1]]
 
     def build_chain(self):
-        if (self.seed_word in self.words) and (self.seed_word is not None):
+        if self.seed_word == ':':
+            pattern = re.compile(r'[\w]+:')
+            matches = [i for i, j in enumerate(self.words)
+                       if re.match(pattern, j)]
+            seed_num = random.choice(matches)
+        elif (self.seed_word in self.words) and (self.seed_word is not None):
             matches = [i for i, j in enumerate(self.words) 
                        if j == self.seed_word]
             seed_num = random.choice(matches)
@@ -105,4 +136,5 @@ class Markov(object):
         gen_text = front_text[:-1] + back_text
         if not gen_text[0][0].isupper():
             gen_text[0] = gen_text[0].capitalize()
+
         return ' '.join(gen_text)

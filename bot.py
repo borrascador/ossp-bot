@@ -17,7 +17,7 @@ filename = os.path.join(dir,
                         'fb-scraper',
                         '1500321840185061_facebook_statuses.csv'
                         )
-markov = Markov(filename, seed='but')
+markov = Markov(filename, seed=['but', 'except', ':'])
 t = 0
 
 while True:
