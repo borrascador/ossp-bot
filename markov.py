@@ -133,7 +133,7 @@ class Markov(object):
         self.words.reverse()
         self.database()
 
-        gen_text = front_text[:-1] + back_text
+        gen_text = front_text + back_text[1:]
         if not gen_text[0][0].isupper():
             gen_text[0] = gen_text[0].capitalize()
 
