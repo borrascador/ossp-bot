@@ -17,45 +17,39 @@ class Markov(object):
 
     def get_words(self):
         words = []
-        try:
-            with open('words.txt', 'r', encoding='UTF-8') as f:
-                words = f.readlines()
-                words = [x.strip() for x in words]
-            f.close()
+
+        posts = []
+        with open(self.open_csv, 'r', encoding='UTF-8') as f:
+            reader = csv.reader(f)
+            for row in reader:
+                posts.append(row[1])
+        f.close()
+        
+        del posts[0]
+
+        # Remove spaces before colons and semicolons
+        pattern1 = re.compile(r'\s:|\s;')
+        posts = [re.sub(pattern1, ':', s) for s in posts]
+        
+        # Remove double quotes and parentheses from all posts
+        pattern2 = re.compile(r'\"|\(|\)')
+        posts = [re.sub(pattern2, '', s) for s in posts]
+
+        for p, s in enumerate(posts):
+            posts[p] = s
+            if (posts[p] == '') or (posts[p][-1] in ['.', '!', '?']):
+                continue
             
-        except IOError:
-            posts = []
-            with open(self.open_csv, 'r', encoding='UTF-8') as f:
-                reader = csv.reader(f)
-                for row in reader:
-                    posts.append(row[1])
-            f.close()
-            
-            del posts[0]
+            else:
+                posts[p] = posts[p].strip()+'.'
 
-            # Remove spaces before colons and semicolons
-            pattern1 = re.compile(r'\s:|\s;')
-            posts = [re.sub(pattern1, ':', s) for s in posts]
-            
-            # Remove double quotes and parentheses from all posts
-            pattern2 = re.compile(r'\"|\(|\)')
-            posts = [re.sub(pattern2, '', s) for s in posts]
+        posts = [post.split() for post in posts]
+        words = [word for post in posts for word in post]
 
-            for p, s in enumerate(posts):
-                posts[p] = s
-                if (posts[p] == '') or (posts[p][-1] in ['.', '!', '?']):
-                    continue
-                
-                else:
-                    posts[p] = posts[p].strip()+'.'
-
-            posts = [post.split() for post in posts]
-            words = [word for post in posts for word in post]
-
-            with open('words.txt', 'w', encoding='UTF-8') as f:
-                for word in words:
-                    f.write("{}\n".format(word))
-            f.close()
+        with open('words.txt', 'w', encoding='UTF-8') as f:
+            for word in words:
+                f.write("{}\n".format(word))
+        f.close()
 
         return words
 
