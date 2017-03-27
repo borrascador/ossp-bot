@@ -24,13 +24,13 @@ class Markov(object):
             for row in reader:
                 posts.append(row[1])
         f.close()
-        
+
         del posts[0]
 
         # Remove spaces before colons and semicolons
         pattern1 = re.compile(r'\s:|\s;')
         posts = [re.sub(pattern1, ':', s) for s in posts]
-        
+
         # Remove double quotes and parentheses from all posts
         pattern2 = re.compile(r'\"|\(|\)')
         posts = [re.sub(pattern2, '', s) for s in posts]
@@ -39,7 +39,7 @@ class Markov(object):
             posts[p] = s
             if (posts[p] == '') or (posts[p][-1] in ['.', '!', '?']):
                 continue
-            
+
             else:
                 posts[p] = posts[p].strip()+'.'
 
@@ -82,7 +82,7 @@ class Markov(object):
                        if re.match(pattern, j)]
             seed_num = random.choice(matches)
         elif (self.seed_word in self.words) and (self.seed_word is not None):
-            matches = [i for i, j in enumerate(self.words) 
+            matches = [i for i, j in enumerate(self.words)
                        if j == self.seed_word]
             seed_num = random.choice(matches)
         else:

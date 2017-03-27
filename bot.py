@@ -11,6 +11,7 @@ auth.set_access_token(TOKEN, TOKEN_SECRET)
 api = tweepy.API(auth)
 
 minutes_interval = int(sys.argv[1])
+iterations = int(sys.argv[2])
 
 dir = os.path.dirname(__file__)
 filename = os.path.join(dir,
@@ -20,7 +21,7 @@ filename = os.path.join(dir,
 markov = Markov(filename, seed=['but', 'except', ':'])
 t = 0
 
-while True:
+for i in range(iterations):
     line = markov.generate_markov_text()
     while len(line) > 140:
         line = markov.generate_markov_text()
@@ -28,3 +29,5 @@ while True:
     t += 1
     print("Tweet #" + str(t) + " @ " + str(time.ctime()) + ":\n" + line)
     time.sleep(60 * minutes_interval)  # Tweet every x minutes
+
+print("Good night.")
