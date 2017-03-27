@@ -10,8 +10,12 @@ auth = tweepy.OAuthHandler(KEY, KEY_SECRET)
 auth.set_access_token(TOKEN, TOKEN_SECRET)
 api = tweepy.API(auth)
 
-minutes_interval = int(sys.argv[1])
-iterations = int(sys.argv[2])
+if sys.argv:
+    minutes_interval = int(sys.argv[1])
+    iterations = int(sys.argv[2])
+else:
+    minutes_interval = 30
+    iterations = 24
 
 dir = os.path.dirname(__file__)
 filename = os.path.join(dir,
