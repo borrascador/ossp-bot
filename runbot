@@ -1,6 +1,5 @@
-#!/usr/bin/env bash
+#!/home/borrascador/bin/env bash
 # Run bot.py
 
-source /path/.virtualenvs/path/bin/virtualenvwrapper.#!/bin/sh
 workon ossp-env
 python /home/borrascador/ossp-bot/bot.py
