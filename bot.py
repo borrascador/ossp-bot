@@ -10,7 +10,7 @@ auth = tweepy.OAuthHandler(KEY, KEY_SECRET)
 auth.set_access_token(TOKEN, TOKEN_SECRET)
 api = tweepy.API(auth)
 
-if len(sys.argv) > 0:
+if len(sys.argv) > 1:
     minutes_interval = int(sys.argv[1])
     iterations = int(sys.argv[2])
 else:
