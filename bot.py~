@@ -14,8 +14,8 @@ if len(sys.argv) > 1:
     minutes_interval = int(sys.argv[1])
     iterations = int(sys.argv[2])
 else:
-    minutes_interval = 15
-    iterations = 12
+    minutes_interval = 30
+    iterations = 24
 
 dir = os.path.dirname(__file__)
 filename = os.path.join(dir,
