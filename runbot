@@ -2,4 +2,4 @@
 # Run bot.py
 
 source /home/borrascador/.virtualenvs/ossp-env/bin/activate
-python /home/borrascador/ossp-bot/bot.py
+python /home/borrascador/ossp-bot/bot.py 15 36
