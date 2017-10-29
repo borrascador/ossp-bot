@@ -8,20 +8,21 @@ import csv
 import time
 from secret import *
 
-access_token = APP_ID + "|" + APP_SECRET
+
+access_token = app_id + "|" + app_secret
 
 def request_until_succeed(url):
     req = urllib.request.Request(url)
     success = False
     while success is False:
-        try:
+        try: 
             response = urllib.request.urlopen(req)
             if response.getcode() == 200:
                 success = True
         except Exception as e:
             print(e)
-            print("Error for URL %s at %s" % (url, datetime.datetime.now()))
-            print("Error for URL %s at %s" % (url, datetime.datetime.now()))
+            print("Error for URL {} at {}".format(url, datetime.datetime.now()))
+            print("Error for URL {} at {}".format(url, datetime.datetime.now()))
             time.sleep(5)
             print("Retrying.")
     return response.read().decode('UTF-8')
@@ -31,12 +32,12 @@ def unicode_normalize(text):
     return text.translate({ 0x2018:0x27, 0x2019:0x27, 0x201C:0x22, 0x201D:0x22,
                             0xa0:0x20 })
 
-def getFacebookPageFeedData(GROUP_ID, access_token, num_statuses):
+def getFacebookPageFeedData(group_id, access_token, num_statuses):
 
-    # Construct the URL string; see
+    # Construct the URL string; see 
     # http://stackoverflow.com/a/37239851 for Reactions parameters
     base = "https://graph.facebook.com/v2.6"
-    node = "/"+ GROUP_ID + "/feed"
+    node = "/"+ group_id + "/feed"  
     fields = "/?fields=message,link,created_time,type,name,id," + \
             "comments.limit(0).summary(true),shares,reactions." + \
             "limit(0).summary(true),from"
@@ -135,20 +136,20 @@ def processFacebookPageFeedStatus(status, access_token):
     num_angrys = get_num_total_reactions('angry', reactions)
 
     # return a tuple of all processed data
-    return (status_id, status_message, status_author, link_name, status_type,
-            status_link, status_published, num_reactions, num_comments,
+    return (status_id, status_message, status_author, link_name, status_type, 
+            status_link, status_published, num_reactions, num_comments, 
             num_shares, num_likes, num_loves, num_wows, num_hahas, num_sads,
             num_angrys)
 
-def scrapeFacebookPageFeedStatus(GROUP_ID, access_token):
+def scrapeFacebookPageFeedStatus(group_id, access_token):
     csv.register_dialect
-    with open('%s_facebook_statuses.csv' % GROUP_ID, 'w', newline='', \
+    with open('%s_facebook_statuses.csv' % group_id, 'w', newline='', \
               encoding='UTF-8') as file:
         w = csv.writer(file)
-        w.writerow(["status_id", "status_message", "status_author",
+        w.writerow(["status_id", "status_message", "status_author", 
             "link_name", "status_type", "status_link",
-            "status_published", "num_reactions", "num_comments",
-            "num_shares", "num_likes", "num_loves", "num_wows",
+            "status_published", "num_reactions", "num_comments", 
+            "num_shares", "num_likes", "num_loves", "num_wows", 
             "num_hahas", "num_sads", "num_angrys"])
 
         has_next_page = True
@@ -156,13 +157,13 @@ def scrapeFacebookPageFeedStatus(GROUP_ID, access_token):
         scrape_starttime = datetime.datetime.now()
 
         print("Scraping %s Facebook Group at %s" % \
-                (GROUP_ID, scrape_starttime))
+                (group_id, scrape_starttime))
 
-        statuses = getFacebookPageFeedData(GROUP_ID, access_token, 100)
+        statuses = getFacebookPageFeedData(group_id, access_token, 100)
 
         while has_next_page:
             for status in statuses['data']:
-
+                
                 # Ensure it is a status with the expected metadata
                 if 'reactions' in status:
                     w.writerow(processFacebookPageFeedStatus(status, access_token))
@@ -186,7 +187,7 @@ def scrapeFacebookPageFeedStatus(GROUP_ID, access_token):
 
 
 if __name__ == '__main__':
-    scrapeFacebookPageFeedStatus(GROUP_ID, access_token)
+    scrapeFacebookPageFeedStatus(group_id, access_token)
 
 
 # The CSV can be opened in all major statistical programs. Have fun! :)
