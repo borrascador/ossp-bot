@@ -9,7 +9,7 @@ import time
 from secret import *
 
 
-access_token = app_id + "|" + app_secret
+ACCESS_TOKEN = APP_ID + "|" + APP_SECRET
 
 def request_until_succeed(url):
     req = urllib.request.Request(url)
@@ -32,16 +32,16 @@ def unicode_normalize(text):
     return text.translate({ 0x2018:0x27, 0x2019:0x27, 0x201C:0x22, 0x201D:0x22,
                             0xa0:0x20 })
 
-def getFacebookPageFeedData(group_id, access_token, num_statuses):
+def getFacebookPageFeedData(GROUP_ID, ACCESS_TOKEN, num_statuses):
 
     # Construct the URL string; see 
     # http://stackoverflow.com/a/37239851 for Reactions parameters
     base = "https://graph.facebook.com/v2.6"
-    node = "/"+ group_id + "/feed"  
+    node = "/"+ GROUP_ID + "/feed"  
     fields = "/?fields=message,link,created_time,type,name,id," + \
             "comments.limit(0).summary(true),shares,reactions." + \
             "limit(0).summary(true),from"
-    parameters = "&limit=%s&access_token=%s" % (num_statuses, access_token)
+    parameters = "&limit={}&access_token={}".format(num_statuses, ACCESS_TOKEN)
     url = base + node + fields + parameters
 
     # retrieve data
@@ -49,13 +49,13 @@ def getFacebookPageFeedData(group_id, access_token, num_statuses):
 
     return data
 
-def getReactionsForStatus(status_id, access_token):
+def getReactionsForStatus(status_id, ACCESS_TOKEN):
 
     # See http://stackoverflow.com/a/37239851 for Reactions parameters
         # Reactions are only accessable at a single-post endpoint
 
     base = "https://graph.facebook.com/v2.6"
-    node = "/%s" % status_id
+    node = "/{}".format(status_id)
     reactions = "/?fields=" \
             "reactions.type(LIKE).limit(0).summary(total_count).as(like)" \
             ",reactions.type(LOVE).limit(0).summary(total_count).as(love)" \
@@ -63,7 +63,7 @@ def getReactionsForStatus(status_id, access_token):
             ",reactions.type(HAHA).limit(0).summary(total_count).as(haha)" \
             ",reactions.type(SAD).limit(0).summary(total_count).as(sad)" \
             ",reactions.type(ANGRY).limit(0).summary(total_count).as(angry)"
-    parameters = "&access_token=%s" % access_token
+    parameters = "&access_token={}".format(ACCESS_TOKEN)
     url = base + node + reactions + parameters
 
     # retrieve data
@@ -72,7 +72,7 @@ def getReactionsForStatus(status_id, access_token):
     return data
 
 
-def processFacebookPageFeedStatus(status, access_token):
+def processFacebookPageFeedStatus(status, ACCESS_TOKEN):
 
     # The status is now a Python dictionary, so for top-level items,
     # we can simply call the key.
@@ -111,7 +111,7 @@ def processFacebookPageFeedStatus(status, access_token):
     # Only check for reactions if past date of implementation:
     # http://newsroom.fb.com/news/2016/02/reactions-now-available-globally/
 
-    reactions = getReactionsForStatus(status_id, access_token) \
+    reactions = getReactionsForStatus(status_id, ACCESS_TOKEN) \
             if status_published > '2016-02-24 00:00:00' else {}
 
     num_likes = 0 if 'like' not in reactions else \
@@ -141,9 +141,9 @@ def processFacebookPageFeedStatus(status, access_token):
             num_shares, num_likes, num_loves, num_wows, num_hahas, num_sads,
             num_angrys)
 
-def scrapeFacebookPageFeedStatus(group_id, access_token):
+def scrapeFacebookPageFeedStatus(GROUP_ID, ACCESS_TOKEN):
     csv.register_dialect
-    with open('%s_facebook_statuses.csv' % group_id, 'w', newline='', \
+    with open('{}_facebook_statuses.csv'.format(GROUP_ID), 'w', newline='', \
               encoding='UTF-8') as file:
         w = csv.writer(file)
         w.writerow(["status_id", "status_message", "status_author", 
@@ -156,23 +156,24 @@ def scrapeFacebookPageFeedStatus(group_id, access_token):
         num_processed = 0   # keep a count on how many we've processed
         scrape_starttime = datetime.datetime.now()
 
-        print("Scraping %s Facebook Group at %s" % \
-                (group_id, scrape_starttime))
+        print("Scraping {} Facebook Group at {}".format(
+                GROUP_ID, scrape_starttime))
 
-        statuses = getFacebookPageFeedData(group_id, access_token, 100)
+        statuses = getFacebookPageFeedData(GROUP_ID, ACCESS_TOKEN, 100)
 
         while has_next_page:
             for status in statuses['data']:
                 
                 # Ensure it is a status with the expected metadata
                 if 'reactions' in status:
-                    w.writerow(processFacebookPageFeedStatus(status, access_token))
+                    w.writerow(processFacebookPageFeedStatus(status, ACCESS_TOKEN))
 
                 # output progress occasionally to make sure code is not
                 # stalling
                 num_processed += 1
                 if num_processed % 100 == 0:
-                    print("%s Statuses Processed: %s" % (num_processed, datetime.datetime.now()))
+                    print("{} Statuses Processed: {}".format(
+                            num_processed, datetime.datetime.now()))
 
             # if there is no next page, we're done.
             if 'paging' in statuses.keys():
@@ -182,12 +183,12 @@ def scrapeFacebookPageFeedStatus(group_id, access_token):
                 has_next_page = False
 
 
-        print("\nDone!\n%s Statuses Processed in %s" % \
-                (num_processed, datetime.datetime.now() - scrape_starttime))
+        print("\nDone!\n{} Statuses Processed in {}".format(
+                num_processed, datetime.datetime.now() - scrape_starttime))
 
 
 if __name__ == '__main__':
-    scrapeFacebookPageFeedStatus(group_id, access_token)
+    scrapeFacebookPageFeedStatus(GROUP_ID, ACCESS_TOKEN)
 
 
 # The CSV can be opened in all major statistical programs. Have fun! :)

@@ -1,3 +1,0 @@
-cd ~/dev/python/ossp-bot/
-source venv/bin/activate
-python bot.py
