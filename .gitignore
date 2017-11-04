@@ -23,4 +23,7 @@ Session.vim
 
 # Auto-generated tag files
 tags
-~                       
+~
+
+# OSSP CSV
+\fb-scraper\1500321840185061_facebook_statuses.csv

@@ -39,17 +39,11 @@ class Markov(object):
             posts[p] = s
             if (posts[p] == '') or (posts[p][-1] in ['.', '!', '?']):
                 continue
-
             else:
                 posts[p] = posts[p].strip()+'.'
 
         posts = [post.split() for post in posts]
         words = [word for post in posts for word in post]
-
-        with open('words.txt', 'w', encoding='UTF-8') as f:
-            for word in words:
-                f.write("{}\n".format(word))
-        f.close()
 
         return words
 
@@ -101,7 +95,7 @@ class Markov(object):
 
         while True:
             back_text.append(seed_chain[0])
-            if seed_chain[0][-1] in ['.', '!']:
+            if seed_chain[0][-1] in ['.', '!', '?']:
                 break
             del seed_chain[0]
             key = tuple(seed_chain)
@@ -116,7 +110,7 @@ class Markov(object):
 
         while True:
             front_text.append(seed_chain[0])
-            if seed_chain[1][-1] in ['.', '!']:
+            if seed_chain[1][-1] in ['.', '!', '?']:
                 front_text.reverse()
                 break
             del seed_chain[0]
