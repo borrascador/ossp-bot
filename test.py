@@ -3,7 +3,6 @@ import sys
 import os
 from markov import Markov
 
-
 start_time = time.time()
 
 seed = list(sys.argv[1:-2])
