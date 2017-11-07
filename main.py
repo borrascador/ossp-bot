@@ -9,7 +9,7 @@ filename = os.path.join(directory,
                         'fb-scraper',
                         '1500321840185061_facebook_statuses.csv'
                         )
-markov = Markov(filename, seed=['but', 'app', 'except', ':', ';'])
+markov = Markov(filename, seed=['but', 'except', 'for', ':', ';', 'app', 'game'])
 
 line = markov.generate_markov_text()
 while len(line) > 140:
