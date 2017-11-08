@@ -17,28 +17,30 @@ class Markov(object):
 
     def get_words(self):
         words = []
-        posts = []
 
+        posts = []
         with open(self.open_csv, 'r', encoding='UTF-8') as f:
             reader = csv.reader(f)
-            pattern1 = re.compile(r'\s:|\s;')
-            pattern2 = re.compile(r'\"|\(|\)')
             for row in reader:
-                post = row[1]
-                
-                # Remove spaces before colons and semicolons
-                re.sub(pattern1, ':', post)
-
-                # Remove double quotes and parentheses from all posts
-                re.sub(pattern2, '', post)
-
-                if not ((post == '') or (post[-1] in ['.', '!', '?'])):
-                    post = post.strip()+'.'
-
                 posts.append(row[1])
         f.close()
 
         del posts[0]
+
+        # Remove spaces before colons and semicolons
+        pattern1 = re.compile(r'\s:|\s;')
+        posts = [re.sub(pattern1, ':', s) for s in posts]
+
+        # Remove double quotes and parentheses from all posts
+        pattern2 = re.compile(r'\"|\(|\)')
+        posts = [re.sub(pattern2, '', s) for s in posts]
+
+        for p, s in enumerate(posts):
+            posts[p] = s
+            if (posts[p] == '') or (posts[p][-1] in ['.', '!', '?']):
+                continue
+            else:
+                posts[p] = posts[p].strip()+'.'
 
         posts = [post.split() for post in posts]
         words = [word for post in posts for word in post]
