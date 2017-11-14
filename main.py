@@ -6,10 +6,11 @@ from secret import *
 
 directory = os.path.dirname(__file__)
 filename = os.path.join(directory,
-                        'fb-scraper',
+                        'facebook-page-post-scraper/',
                         '1500321840185061_facebook_statuses.csv'
                         )
-markov = Markov(filename, seed=['but', 'except', 'for', ':', ';', 'app', 'game'])
+
+markov = Markov(filename, seed=['but', 'with', 'except', 'for', ':', 'app', 'band'])
 
 line = markov.generate_markov_text()
 while len(line) > 140:

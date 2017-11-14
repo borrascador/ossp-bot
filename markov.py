@@ -17,7 +17,7 @@ class Markov(object):
 
     def get_words(self):
         words = []
-
+        
         posts = []
         with open(self.open_csv, 'r', encoding='UTF-8') as f:
             reader = csv.reader(f)
